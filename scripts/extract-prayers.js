@@ -235,22 +235,100 @@ class DataExtractor {
                 type: this.determineSectionType(sectionName)
             };
 
-            // Assign to appropriate hour(s)
+            // Assign to appropriate hour(s) based on section name
             const lowerName = sectionName.toLowerCase();
-            
-            if (lowerName.includes('matutinum') || lowerName.includes('lectio') || lowerName.includes('responsory')) {
+
+            // Matins (Matutinum) - readings, responsories, invitatory
+            if (lowerName.includes('matutinum') ||
+                lowerName.includes('lectio') ||
+                lowerName.includes('responsory') ||
+                lowerName.includes('invit') ||
+                lowerName.includes('nocturn') ||
+                lowerName.includes('te deum')) {
                 hours.matutinum.prayers.push(prayer);
-            } else if (lowerName.includes('laudes')) {
+            }
+
+            // Lauds
+            if (lowerName.includes('laudes') ||
+                lowerName.includes('benedictus')) {
                 hours.laudes.prayers.push(prayer);
-            } else if (lowerName.includes('vespera')) {
+            }
+
+            // Prime
+            if (lowerName.includes('prima')) {
+                hours.prima.prayers.push(prayer);
+            }
+
+            // Terce (Tertia)
+            if (lowerName.includes('tertia') || lowerName.includes('terce')) {
+                hours.tertia.prayers.push(prayer);
+            }
+
+            // Sext (Sexta)
+            if (lowerName.includes('sexta') || lowerName.includes('sext')) {
+                hours.sexta.prayers.push(prayer);
+            }
+
+            // None (Nona)
+            if (lowerName.includes('nona') || lowerName.includes('none')) {
+                hours.nona.prayers.push(prayer);
+            }
+
+            // Vespers (Vespera)
+            if (lowerName.includes('vespera') ||
+                lowerName.includes('vesper') ||
+                lowerName.includes('magnificat')) {
                 hours.vespera.prayers.push(prayer);
-            } else if (lowerName.includes('oratio')) {
-                // Prayer goes to all hours
-                Object.values(hours).forEach(hour => hour.prayers.push(prayer));
+            }
+
+            // Compline (Completorium)
+            if (lowerName.includes('completorium') ||
+                lowerName.includes('compline') ||
+                lowerName.includes('nunc dimittis')) {
+                hours.completorium.prayers.push(prayer);
+            }
+
+            // Oratio (main prayer/collect) goes to all hours
+            if (lowerName.includes('oratio') && !lowerName.includes('conclusio')) {
+                Object.values(hours).forEach(hour => {
+                    // Only add if not already added to avoid duplicates
+                    if (!hour.prayers.some(p => p.text === prayer.text)) {
+                        hour.prayers.push({...prayer});
+                    }
+                });
+            }
+
+            // Hymns can go to multiple hours
+            if (lowerName.includes('hymnus') && !lowerName.includes('laudes') &&
+                !lowerName.includes('vespera') && !lowerName.includes('matutinum')) {
+                // Generic hymn - add to main hours
+                [hours.laudes, hours.vespera].forEach(hour => {
+                    if (!hour.prayers.some(p => p.text === prayer.text)) {
+                        hour.prayers.push({...prayer});
+                    }
+                });
+            }
+
+            // Capitulum (short reading) for minor hours
+            if (lowerName.includes('capitulum') && !lowerName.match(/(laudes|vespera|matutinum)/)) {
+                [hours.prima, hours.tertia, hours.sexta, hours.nona].forEach(hour => {
+                    if (!hour.prayers.some(p => p.text === prayer.text)) {
+                        hour.prayers.push({...prayer});
+                    }
+                });
+            }
+
+            // Versum (versicle) can go to multiple hours
+            if (lowerName.includes('versum') && !lowerName.match(/(laudes|vespera)/)) {
+                Object.values(hours).forEach(hour => {
+                    if (!hour.prayers.some(p => p.text === prayer.text)) {
+                        hour.prayers.push({...prayer});
+                    }
+                });
             }
         }
 
-        // Remove empty hours and ensure each hour has at least one prayer
+        // Ensure each hour has at least one prayer
         Object.keys(hours).forEach(hourKey => {
             if (hours[hourKey].prayers.length === 0) {
                 hours[hourKey].prayers.push({

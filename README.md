@@ -123,7 +123,23 @@ All tests use known liturgical dates from authoritative Catholic sources.
 
 ## Data Integration
 
-The app comes with a **full year of pre-extracted English prayers (2025)** ready to use. The data includes all 365 days with proper liturgical calendar integration.
+The app comes with a **full year of pre-extracted English prayers (2025)** ready to use. The data includes all 365 days (9.1MB) with proper liturgical calendar integration.
+
+### Data Coverage
+
+All 8 canonical hours are available for every day:
+- **Matins** - Complete with readings from Scripture and Church Fathers
+- **Lauds** - Morning prayer with antiphons, hymns, and psalms
+- **Prime, Terce, Sext, None** - Minor hours with prayers and versicles
+- **Vespers** - Evening prayer with Magnificat antiphons
+- **Compline** - Night prayer before rest
+
+**Content varies by feast type:**
+- **Major Feasts** (Christmas, Easter, Epiphany): 40+ sections in Matins, 10-12 sections per other hour
+- **Sunday/Saint Days**: 15-30 sections in Matins, 4-8 sections per other hour
+- **Ordinary Weekdays**: Core prayers and readings available for all hours
+
+The extraction includes content from Sancti (saint-specific), Tempora (seasonal), and Commune (common) files from the Divinum Officium database.
 
 ### Regenerating Prayer Data
 
