@@ -59,12 +59,17 @@ The app is built with modern web technologies and a modular architecture:
    npm install
    ```
 
-3. **Start the development server**:
+3. **Run the tests** (recommended):
+   ```bash
+   npm test
+   ```
+
+4. **Start the development server**:
    ```bash
    npm run dev
    ```
 
-4. **Open your browser** to `http://localhost:3000`
+5. **Open your browser** to `http://localhost:3333`
 
 ### Building for Production
 
@@ -90,13 +95,61 @@ The app formats different types of content appropriately:
 - **Hymns** - Purple background, formatted as verse
 - **Prayers** - Standard formatting for collects and other prayers
 
+## Testing
+
+The project includes a comprehensive test suite to ensure liturgical accuracy:
+
+```bash
+# Run tests once
+npm run test:run
+
+# Run tests in watch mode
+npm test
+
+# Run tests with UI
+npm run test:ui
+```
+
+### Test Coverage
+
+The test suite validates:
+- **Easter Calculation** - Verifies accurate Easter dates for 2020-2100
+- **Liturgical Seasons** - Tests season determination (Advent, Christmas, Lent, Easter, Ordinary Time)
+- **Week Designations** - Validates liturgical week calculations (Adv1-4, Pasc0-7, Pent01-24, etc.)
+- **Observance Precedence** - Tests the complex rank hierarchy (1st class > 2nd > 3rd > memorial > feria)
+- **Edge Cases** - Ash Wednesday, Pentecost, year boundaries, leap years
+
+All tests use known liturgical dates from authoritative Catholic sources.
+
 ## Data Integration
 
-Currently, the app uses sample liturgical data for demonstration. To integrate with real Divinum Officium data:
+The app comes with a **full year of pre-extracted English prayers (2025)** ready to use. The data includes all 365 days with proper liturgical calendar integration.
 
-1. Place the `divinum-officium` repository in the project root
-2. Implement file loading in the `loadFile` method in `src/main.js`
-3. The parser is ready to handle the complex Divinum Officium format
+### Regenerating Prayer Data
+
+To extract prayers for different years or languages:
+
+1. **Ensure the Divinum Officium repository is cloned**:
+   ```bash
+   git clone https://github.com/DivinumOfficium/divinum-officium.git
+   ```
+
+2. **Generate prayer data**:
+   ```bash
+   # Full year
+   node scripts/extract-prayers.js --start 2025-01-01 --end 2025-12-31 --language English
+
+   # Custom date range
+   node scripts/extract-prayers.js --start 2025-12-01 --end 2025-12-31
+
+   # Latin support
+   node scripts/extract-prayers.js --language Latin
+   ```
+
+3. **Copy to public directory**:
+   ```bash
+   cp src/data/prayers-english.json public/prayers-english.json
+   ```
 
 ### File Structure Expected
 
