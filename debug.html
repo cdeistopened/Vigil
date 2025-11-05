@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vigil Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .error { color: red; background: #ffebee; padding: 10px; margin: 10px 0; }
+        .success { color: green; background: #e8f5e8; padding: 10px; margin: 10px 0; }
+        .info { color: blue; background: #e3f2fd; padding: 10px; margin: 10px 0; }
+        #logs { background: #f5f5f5; padding: 10px; max-height: 400px; overflow-y: auto; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>Vigil Debug Mode</h1>
+    <div id="status">Loading...</div>
+    <div id="logs"></div>
+    
+    <script type="module">
+        const statusDiv = document.getElementById('status');
+        const logsDiv = document.getElementById('logs');
+        
+        function log(message, type = 'info') {
+            console.log(message);
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `${new Date().toLocaleTimeString()}: ${message}`;
+            logsDiv.appendChild(div);
+            logsDiv.scrollTop = logsDiv.scrollHeight;
+        }
+        
+        async function debugApp() {
+            try {
+                log('🔍 Starting debug process...');
+                
+                // Test 1: Basic module loading
+                log('📦 Testing module imports...');
+                
+                const { DataLoader } = await import('./src/data-loader.js');
+                log('✅ DataLoader imported successfully', 'success');
+                
+                // Test 2: Data loading
+                log('🔄 Testing data loader initialization...');
+                const dataLoader = new DataLoader();
+                await dataLoader.init();
+                log('✅ DataLoader initialized successfully', 'success');
+                
+                // Test 3: Get today's prayers
+                log('📅 Testing prayer data retrieval...');
+                const prayers = dataLoader.getTodaysPrayers();
+                log(`✅ Retrieved prayers for ${prayers.date}`, 'success');
+                log(`📊 Available hours: ${Object.keys(prayers.hours).join(', ')}`, 'info');
+                
+                // Test 4: Simple renderer
+                log('🎨 Testing renderer...');
+                const { SimplePrayerRenderer } = await import('./src/simple-renderer.js');
+                log('✅ SimplePrayerRenderer imported successfully', 'success');
+                
+                // Test 5: Create a simple prayer display
+                const container = document.createElement('div');
+                document.body.appendChild(container);
+                
+                const renderer = new SimplePrayerRenderer(container);
+                const laudsData = prayers.hours.laudes;
+                
+                log(`🙏 Rendering Lauds with ${laudsData.prayers?.length || 0} prayers...`);
+                renderer.renderHour(laudsData, 'Lauds');
+                log('✅ Prayer rendering successful!', 'success');
+                
+                statusDiv.innerHTML = '<div class="success">✅ All tests passed! The app should work.</div>';
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                log(`📍 Stack: ${error.stack}`, 'error');
+                statusDiv.innerHTML = `<div class="error">❌ Debug failed: ${error.message}</div>`;
+            }
+        }
+        
+        // Catch any uncaught errors
+        window.addEventListener('error', (event) => {
+            log(`❌ Uncaught error: ${event.error?.message || event.message}`, 'error');
+        });
+        
+        window.addEventListener('unhandledrejection', (event) => {
+            log(`❌ Unhandled promise rejection: ${event.reason}`, 'error');
+        });
+        
+        // Start debugging
+        debugApp();
+    </script>
+</body>
+</html>
