@@ -77,7 +77,55 @@ The app is built with modern web technologies and a modular architecture:
 npm run build
 ```
 
-The built files will be in the `dist/` directory.
+The built files will be in the `dist/` directory (9.5MB total).
+
+### Preview Production Build
+
+```bash
+npm run preview
+```
+
+Opens the production build at `http://localhost:4173`
+
+## Deployment
+
+This app is optimized for **Vercel** deployment (recommended) but can be deployed to any static hosting platform.
+
+### Deploy to Vercel (Recommended)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/vigil)
+
+**One-Click Deploy:**
+1. Click the "Deploy" button above
+2. Connect your GitHub account
+3. Vercel will automatically detect Vite and configure everything
+4. Your app will be live in ~2 minutes
+
+**Manual Deploy:**
+1. Install Vercel CLI: `npm i -g vercel`
+2. Run: `vercel`
+3. Follow the prompts
+4. Deploy: `vercel --prod`
+
+**Features:**
+- ✅ Automatic HTTPS
+- ✅ Global CDN (fast worldwide)
+- ✅ Auto-deploy on Git push
+- ✅ Free tier: 100GB bandwidth/month
+- ✅ Custom domains supported
+
+### Deploy to Other Platforms
+
+The app is a standard Vite build and works with:
+- **Netlify**: Drag `dist/` folder or connect Git repo
+- **GitHub Pages**: Use `gh-pages` branch with `dist/` contents
+- **Cloudflare Pages**: Connect Git repo, build command: `npm run build`
+- **Firebase Hosting**: `firebase deploy` after `npm run build`
+
+All platforms should use:
+- **Build command**: `npm run build`
+- **Output directory**: `dist`
+- **Node version**: 18.x or higher
 
 ## Usage
 

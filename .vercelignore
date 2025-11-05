@@ -1,0 +1,34 @@
+# Dependencies
+node_modules
+package-lock.json
+
+# Development files
+.git
+.gitignore
+
+# Source Divinum Officium data (not needed for deployment)
+divinum-officium
+
+# Test files
+tests
+*.test.js
+
+# Scripts (not needed for production)
+scripts
+
+# Source data (already in public/)
+src/data/prayers-english.json
+src/data/saints-metadata.json
+src/data/saints-metadata.js
+
+# Documentation
+docs
+README.md
+SAMPLE_DISPLAY.md
+
+# Development configs
+vite.config.js
+.editorconfig
+
+# Build artifacts (will be rebuilt)
+dist
