@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pray the traditional Liturgy of the Hours with the 1962 Roman Breviary">
     <title>Vigil - Liturgy of the Hours</title>
     <style>
         * {
@@ -35,12 +36,52 @@
             color: #8B4513;
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
+            letter-spacing: 1px;
         }
-        
+
         .subtitle {
             color: #666;
             font-style: italic;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .liturgical-date {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #f5f5f5;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #555;
+            border-left: 3px solid #8B4513;
+        }
+
+        .liturgical-date strong {
+            color: #8B4513;
+        }
+
+        .app-footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #ddd;
+            color: #777;
+            font-size: 0.85rem;
+        }
+
+        .app-footer a {
+            color: #8B4513;
+            text-decoration: none;
+        }
+
+        .app-footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-note {
+            margin-top: 0.5rem;
+            font-style: italic;
+            color: #999;
         }
         
         .loading {
@@ -294,8 +335,9 @@
 <body>
     <div class="container">
         <header>
-            <h1>Vigil</h1>
-            <p class="subtitle">Liturgy of the Hours</p>
+            <h1>✝ Vigil</h1>
+            <p class="subtitle">Liturgy of the Hours · Traditional Roman Rite</p>
+            <div id="liturgical-date" class="liturgical-date"></div>
         </header>
         
         <div class="hour-nav">
@@ -312,8 +354,13 @@
         <main id="prayer-content">
             <div class="loading">Loading today's prayers...</div>
         </main>
+
+        <footer class="app-footer">
+            <p>Prayer texts from <a href="https://github.com/DivinumOfficium/divinum-officium" target="_blank" rel="noopener">Divinum Officium</a></p>
+            <p class="footer-note">✝ Ad maiorem Dei gloriam</p>
+        </footer>
     </div>
-    
+
     <script type="module" src="src/main.js"></script>
 </body>
 </html>

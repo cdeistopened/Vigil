@@ -79,23 +79,50 @@ class VigilApp {
     async loadTodaysPrayers() {
         try {
             this.renderer.showLoading();
-            
+
             // Initialize data loader
             await this.dataLoader.init();
-            
+
             // Load today's prayers from real data
             this.currentData = this.dataLoader.getTodaysPrayers();
             console.log('Loaded prayers for:', this.currentData.date);
-            
+
+            // Display liturgical date information
+            this.displayLiturgicalDate();
+
             // Preload upcoming days for fast access
             await this.dataLoader.preloadPrayers(7);
-            
+
             this.displayHour(this.currentHour);
-            
+
         } catch (error) {
             console.error('Error loading prayers:', error);
             this.renderer.showError('Failed to load today\'s prayers. Please try again.');
         }
+    }
+
+    /**
+     * Display liturgical date information in the header
+     */
+    displayLiturgicalDate() {
+        const dateElement = document.getElementById('liturgical-date');
+        if (!dateElement || !this.currentData) return;
+
+        const date = new Date(this.currentData.date + 'T00:00:00');
+        const formattedDate = date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        const primary = this.currentData.primary;
+        const observanceName = primary ? primary.title : 'Feria';
+
+        dateElement.innerHTML = `
+            <strong>${formattedDate}</strong><br>
+            ${observanceName}
+        `;
     }
 
 
