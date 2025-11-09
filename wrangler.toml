@@ -2,6 +2,7 @@
 # This file is optional - Cloudflare Pages will auto-detect Vite
 
 name = "vigil-liturgy-hours"
+pages_build_output_dir = "dist"
 compatibility_date = "2024-01-01"
 
 [build]
